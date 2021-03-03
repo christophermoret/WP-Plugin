@@ -1,0 +1,51 @@
+version: '3.3'
+
+# mkdir projetwpreal  (avoir le fichier docker-compose.yml au même niveau que ce dossier)
+# mkdir projetwpreal/data_db (dans projetwpreal donc)
+# docker compose up -d
+
+services:
+    mysql_db:
+        image: mysql:5.7 # version de l'image mysql
+        volumes:
+          - ./data_db:/var/lib/mysql # où seront stockée les données
+        environment:
+            MYSQL_ROOT_PASSWORD: admin_digital2019 # mot de passe root
+            MYSQL_DATABASE: proj_wp_real_db # le nom de la db prête à recevoir les tables de wordpress
+            MYSQL_USER: Jul1 # votre nom d'utilisateur
+            MYSQL_PASSWORD: digital2019 # votre mot de passe
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin:4.9 # version de l'image phpMyAdmin
+        links:
+          - mysql_db # lien avec le mysql
+        environment:
+          VIRTUAL_HOST: projetwp.real
+          PMA_HOST: mysql_db
+          PMA_PORT: 3306
+        ports:
+          - '9000:80' # le port pour accéder à phpMyAdmin -> localhost:9000
+
+    wordpress:
+        image: wordpress:latest # dernière version de wordrpress
+        depends_on:
+            - mysql_db # dépendance avec le mysql
+        ports:
+            - 8080:80 # port pour accéder au wordpress -> localhost:8080
+        environment:
+            VIRTUAL_HOST: projetwp.real
+            WORDPRESS_DB_HOST: mysql_db:3306
+            WORDPRESS_DB_USER: Jul1 # doit être le même que plus haut
+            WORDPRESS_DB_PASSWORD: digital2019 # doit être le même mot de passe que plus haut
+            WORDPRESS_DB_NAME: proj_wp_real_db # doit être le même nom que plus haut
+            WORDPRESS_TABLE_PREFIX: pwr_db_ # pour éviter d'avoir comme préfixe de table 'wp_' (trop commun)
+        working_dir: /var/www/html # chemin virtuel pointant vers le container où wordpress est déployé
+        volumes:
+          - .:/var/www/html/ # fait le lien entre le dossier local et le chemin virtuel
+        sysctls:
+         # Allow OS to bind 80 port to unprivileged (eg. non-root) users
+          - net.ipv4.ip_unprivileged_port_start=0
+        # Run the services as the same user as the host's one, or as user with uid 1000
+        user: "${UID:-1001}:${UID:-1001}"
+volumes:
+    data_db:
