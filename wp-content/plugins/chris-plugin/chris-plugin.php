@@ -101,45 +101,22 @@ function custom_post_type() {
 
    // SHORTCODES
 
-   // Image shortcode
-   function diwp_image_shortcode($attr){
- 
-    $args = shortcode_atts(
+   /**
+ * [cta_button] returns the HTML code for a CTA Button.
+ * @return string Button HTML Code
+*/
 
-                    array(
-                            'src'   => '#',
-                            'title' => '',
-                            'alt'   => '',
-                            'class' => ''       
-                                       
-                 ), $attr);
+add_shortcode( 'cta_button', 'salcodes_cta' );
 
- $image = '<img src="'.$args['src'].'" title="'.$args['title'].'" alt="'.$args['alt'].'" class="'.$args['class'].'" />';
-
- return $image;
-
- }
-
- add_shortcode('diwp-image', 'diwp_image_shortcode');
-
- // Button
-
- function diwp_button_shortcode($attr){
- 
-    $args = shortcode_atts(
-
-                            array(
-                                            'link'   => '#',
-                                            'bgcolor' => '#1a73e8',
-                                            'textcolor' => '#FFF',
-                                            'text' => 'Button',
-                                       
-                                      ), $attr);
-
-    $button = '<a href="'.$args['link'].'" style="background:'.$args['bgcolor'].'; color:'.$args['textcolor'].'; padding: 8px 20px; display: inline-block; border-radius: 4px; font-size: inherit;margin: 15px 0px;">'.$args['text'].'</a>';
-
-    return $button;
+function salcodes_cta( $atts ) {
+ $a = shortcode_atts( array(
+ 'link' => '#',
+ 'id' => 'salcodes',
+ 'color' => 'blue',
+ 'size' => '',
+ 'label' => 'Button',
+ 'target' => '_self'
+ ), $atts );
+ $output = '<p><a href="' . esc_url( $a['link'] ) . '" id="' . esc_attr( $a['id'] ) . '" class="button ' . esc_attr( $a['color'] ) . ' ' . esc_attr( $a['size'] ) . '" target="' . esc_attr($a['target']) . '">' . esc_attr( $a['label'] ) . '</a></p>';
+ return $output;
 }
-
-add_shortcode('diwp-button', 'diwp_button_shortcode');
-
