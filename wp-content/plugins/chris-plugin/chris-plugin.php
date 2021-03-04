@@ -114,7 +114,7 @@ function salcodes_cta( $atts ) {
  'id' => 'salcodes',
  'color' => 'blue',
  'size' => '',
- 'label' => 'Button',
+ 'label' => 'Get Started',
  'target' => '_self'
  ), $atts );
  $output = '<p><a href="' . esc_url( $a['link'] ) . '" id="' . esc_attr( $a['id'] ) . '" class="button ' . esc_attr( $a['color'] ) . ' ' . esc_attr( $a['size'] ) . '" target="' . esc_attr($a['target']) . '">' . esc_attr( $a['label'] ) . '</a></p>';
