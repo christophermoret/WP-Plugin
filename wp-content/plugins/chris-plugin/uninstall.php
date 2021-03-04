@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * THIS IS TO ALLOW UNINSTALATION AND CLEARING UP DATA IF DONE SO. 
  *trigger this file on plugoin ininstall 
  *@package ChrisPlugin 
  */
