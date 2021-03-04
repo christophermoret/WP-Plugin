@@ -66,7 +66,7 @@ function custom_post_type() {
            // Features this CPT supports in Post Editor
            'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields', ),
            // You can associate this CPT with a taxonomy or custom taxonomy. 
-           'taxonomies'          => array( 'genres' ),
+           'taxonomies'          => array( 'genres', 'actors', 'year'),
            /* A hierarchical CPT is like Pages and can have
            * Parent and child items. A non-hierarchical CPT
            * is like Posts.
@@ -98,3 +98,48 @@ function custom_post_type() {
    */
     
    add_action( 'init', 'custom_post_type', 0 );
+
+   // SHORTCODES
+
+   // Image shortcode
+   function diwp_image_shortcode($attr){
+ 
+    $args = shortcode_atts(
+
+                    array(
+                            'src'   => '#',
+                            'title' => '',
+                            'alt'   => '',
+                            'class' => ''       
+                                       
+                 ), $attr);
+
+ $image = '<img src="'.$args['src'].'" title="'.$args['title'].'" alt="'.$args['alt'].'" class="'.$args['class'].'" />';
+
+ return $image;
+
+ }
+
+ add_shortcode('diwp-image', 'diwp_image_shortcode');
+
+ // Button
+
+ function diwp_button_shortcode($attr){
+ 
+    $args = shortcode_atts(
+
+                            array(
+                                            'link'   => '#',
+                                            'bgcolor' => '#1a73e8',
+                                            'textcolor' => '#FFF',
+                                            'text' => 'Button',
+                                       
+                                      ), $attr);
+
+    $button = '<a href="'.$args['link'].'" style="background:'.$args['bgcolor'].'; color:'.$args['textcolor'].'; padding: 8px 20px; display: inline-block; border-radius: 4px; font-size: inherit;margin: 15px 0px;">'.$args['text'].'</a>';
+
+    return $button;
+}
+
+add_shortcode('diwp-button', 'diwp_button_shortcode');
+
